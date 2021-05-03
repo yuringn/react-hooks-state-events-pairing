@@ -3,15 +3,18 @@ import React, {useState} from "react";
 import Comment from "./Comment";
 
 function Header({title, views, createdAt, upvotes, downvotes, comments }){
+    
     const [up, setUp] = useState(upvotes)
     const [down, setDown] = useState(downvotes)
     const [hide, setHide] = useState(true)
+    const [search, setSearch] =useState("")
+    const filterComment = comments.filter(comment=> comment.user.toLowerCase().includes(search.toLowerCase()))
     
-
     const increase =()=>setUp(up=>up+1) 
     const decrease=()=>setDown(down=> down+1)
     const hideComment=()=>setHide(hide=>!hide)
-            
+    const handleSearch=(e)=>setSearch(e.target.value) 
+    
  
     return (
         <header>
@@ -23,7 +26,9 @@ function Header({title, views, createdAt, upvotes, downvotes, comments }){
             <br/>
             <button onClick={hideComment}>{hide? "Hide " : "Show " }Comments</button>
             <hr/>
-            {hide && < Comment comments ={comments}/>}
+            <input onChange={handleSearch} type ="text" placeholder ="Search..." />
+            {hide && <h2>{comments.length} Comments</h2>}
+            {hide && < Comment comments ={filterComment}/>}
             
             
         </header>
